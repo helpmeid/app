@@ -87,3 +87,6 @@ Improved read receipts with a small recipient avatar and read time beneath the l
 
 ## Version 1.1.7
 Interactive tab transitions now reveal the actual neighboring Chats, Calls, People, or Settings page while the current page slides with the finger. A matching destination header slides alongside the content, the bottom tab bar remains in place, and releasing a short swipe returns to the current screen. Completed swipes settle onto the next page. Existing contact peeks, chat-back gestures, and message replies remain separate. JavaScript syntax, element IDs and eight directional-offset cases checked; physical iPhone gesture testing is still needed.
+
+## Version 1.1.8
+Liquid-glass inspired bottom navigation uses a single translucent moving blue lens, highlights the destination while dragging between tabs, and settles smoothly on a completed or cancelled swipe. It respects light/dark appearance and reduced-motion settings. JavaScript syntax, ID references and six geometry cases checked; physical iPhone rendering remains untested.
