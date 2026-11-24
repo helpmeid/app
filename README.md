@@ -81,3 +81,6 @@ Unified horizontal touch navigation: swipe between Chats, Calls, People and Sett
 
 ## Version 1.1.5
 Swiping back from a conversation now reveals the actual previous main screen (including header, contacts, and navigation) behind the moving chat. The chat follows the finger and settles back if cancelled or slides away when completed. Return restores the prior tab, search and scroll position. No placeholder Back label is shown during this gesture. JavaScript syntax and element references checked; physical iPhone testing remains necessary.
+
+## Version 1.1.6
+Improved read receipts with a small recipient avatar and read time beneath the latest read outgoing message, delivery status beneath the latest outgoing message, and receipt badges in conversation lists. Receipts persist and retry after reconnection. Swipe previews, backgrounded pages and obscured conversations do not send new read receipts. The existing privacy toggle remains available. Read time is when the sender receives the receipt, not a synchronized remote timestamp. JavaScript and element reference checks passed; two-device testing remains necessary.
