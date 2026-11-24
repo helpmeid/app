@@ -50,3 +50,5 @@ Version 1.1.0 adds preliminary CallKit lifecycle integration for real peer calls
 Version 1.1.1 adds an experimental AVKit PiP renderer and local video-frame bridge. It requests automatic native PiP on leaving a video call. This is not an independent native WebRTC engine and the frames may freeze when WKWebView is suspended. Build, sign and test on physical iPhone before relying on it.
 
 Version 1.1.2 improves the shared web interface with a persistent outbox, history loading, and in-app call minimization.
+
+Version 1.1.3 adds pinned chats, message search, unread indicators, ordered automatic delivery and improved connection recovery.
