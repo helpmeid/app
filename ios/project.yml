@@ -5,8 +5,8 @@ options:
 settings:
   base:
     SWIFT_VERSION: "5.0"
-    MARKETING_VERSION: "1.1.0"
-    CURRENT_PROJECT_VERSION: "122"
+    MARKETING_VERSION: "1.1.1"
+    CURRENT_PROJECT_VERSION: "123"
     PRODUCT_BUNDLE_IDENTIFIER: com.helpmeid.messengerapp
 targets:
   MessengerApp:
