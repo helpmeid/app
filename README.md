@@ -84,3 +84,6 @@ Swiping back from a conversation now reveals the actual previous main screen (in
 
 ## Version 1.1.6
 Improved read receipts with a small recipient avatar and read time beneath the latest read outgoing message, delivery status beneath the latest outgoing message, and receipt badges in conversation lists. Receipts persist and retry after reconnection. Swipe previews, backgrounded pages and obscured conversations do not send new read receipts. The existing privacy toggle remains available. Read time is when the sender receives the receipt, not a synchronized remote timestamp. JavaScript and element reference checks passed; two-device testing remains necessary.
+
+## Version 1.1.7
+Interactive tab transitions now reveal the actual neighboring Chats, Calls, People, or Settings page while the current page slides with the finger. A matching destination header slides alongside the content, the bottom tab bar remains in place, and releasing a short swipe returns to the current screen. Completed swipes settle onto the next page. Existing contact peeks, chat-back gestures, and message replies remain separate. JavaScript syntax, element IDs and eight directional-offset cases checked; physical iPhone gesture testing is still needed.
