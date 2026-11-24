@@ -2,6 +2,7 @@ import UIKit
 import WebKit
 import UserNotifications
 import AVFoundation
+import CallKit
 
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -25,12 +26,29 @@ final class WeakBridge: NSObject, WKScriptMessageHandler {
         target?.receive(message)
     }
 }
-final class MessengerController: UIViewController, WKNavigationDelegate, WKUIDelegate {
+final class MessengerController: UIViewController, WKNavigationDelegate, WKUIDelegate, CXProviderDelegate {
     private let home = URL(string: "https://helpmeid.github.io/app/")!
     private var web: WKWebView!
     private var lastNotification = Date.distantPast
     private var iconChanging = false
     private var callAudioActive = false
+    private let callController = CXCallController()
+    private lazy var callProvider: CXProvider = {
+        let config = CXProviderConfiguration()
+        config.supportsVideo = true
+        config.maximumCallsPerCallGroup = 1
+        config.maximumCallGroups = 1
+        config.supportedHandleTypes = [.generic]
+        let provider = CXProvider(configuration: config)
+        provider.setDelegate(self, queue: .main)
+        return provider
+    }()
+    private var systemID: UUID?
+    private var systemGeneration: Int?
+    private var systemIncoming = false
+    private var systemAnswered = false
+    private var systemConnected = false
+    private var systemMuted = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +56,7 @@ final class MessengerController: UIViewController, WKNavigationDelegate, WKUIDel
         let config = WKWebViewConfiguration()
         config.websiteDataStore = .default()
         config.allowsInlineMediaPlayback = true
+        config.allowsPictureInPictureMediaPlayback = true
         config.mediaTypesRequiringUserActionForPlayback = []
         config.limitsNavigationsToAppBoundDomains = true
         config.userContentController.add(WeakBridge(self), name: "appBridge")
@@ -96,8 +115,30 @@ final class MessengerController: UIViewController, WKNavigationDelegate, WKUIDel
                   let title = body["title"] as? String, let text = body["body"] as? String else { return }
             lastNotification = Date()
             notify(title: String(title.prefix(60)), body: String(text.prefix(200)))
+        case "systemCallStart":
+            guard let generation = body["generation"] as? Int, let name = body["name"] as? String else { return }
+            startSystemCall(generation: generation, name: String(name.prefix(60)), video: body["video"] as? Bool ?? false, incoming: body["incoming"] as? Bool ?? false)
+        case "systemCallAnswer":
+            guard let id = matchingCall(body), systemIncoming, !systemAnswered else { return }
+            systemAnswered = true
+            callController.request(CXTransaction(action: CXAnswerCallAction(call: id))) { [weak self] error in
+                if error != nil { DispatchQueue.main.async { if self?.systemID == id { self?.systemAnswered = false } } }
+            }
+        case "systemCallConnected":
+            guard let id = matchingCall(body) else { return }
+            systemConnected = true
+            if !systemIncoming { callProvider.reportOutgoingCall(with: id, connectedAt: Date()) }
+        case "systemCallMute":
+            guard let id = matchingCall(body), let muted = body["muted"] as? Bool, muted != systemMuted else { return }
+            systemMuted = muted
+            callController.request(CXTransaction(action: CXSetMutedCallAction(call: id, muted: muted))) { _ in }
+        case "systemCallEnd":
+            guard let id = matchingCall(body) else { return }
+            clearSystemCall()
+            callProvider.reportCall(with: id, endedAt: Date(), reason: .remoteEnded)
         case "callAudio":
             guard let active = body["active"] as? Bool, active != callAudioActive else { return }
+            if systemID != nil { callAudioActive = active; return }
             do {
                 let session = AVAudioSession.sharedInstance()
                 if active {
@@ -115,6 +156,98 @@ final class MessengerController: UIViewController, WKNavigationDelegate, WKUIDel
             UIApplication.shared.applicationIconBadgeNumber = count
         default: break
         }
+    }
+    private func matchingCall(_ body: [String: Any]) -> UUID? {
+        guard let generation = body["generation"] as? Int, generation == systemGeneration else { return nil }
+        return systemID
+    }
+    private func clearSystemCall() {
+        systemID = nil
+        systemGeneration = nil
+        systemIncoming = false
+        systemAnswered = false
+        systemConnected = false
+        systemMuted = false
+    }
+    private func configureCallAudio() {
+        try? AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .voiceChat, options: [.allowBluetooth, .defaultToSpeaker])
+    }
+    private func sendCallAction(_ action: String, generation: Int, value: Bool = false) {
+        guard let data = try? JSONSerialization.data(withJSONObject: [action, generation, value]), let json = String(data: data, encoding: .utf8) else { return }
+        web.evaluateJavaScript("window.nativeCallAction && window.nativeCallAction(..." + json + ")", completionHandler: nil)
+    }
+    private func startSystemCall(generation: Int, name: String, video: Bool, incoming: Bool) {
+        if let old = systemID { callProvider.reportCall(with: old, endedAt: Date(), reason: .remoteEnded) }
+        clearSystemCall()
+        let id = UUID()
+        systemID = id
+        systemGeneration = generation
+        systemIncoming = incoming
+        let handle = CXHandle(type: .generic, value: name.isEmpty ? "App call" : name)
+        let update = CXCallUpdate()
+        update.remoteHandle = handle
+        update.localizedCallerName = name
+        update.hasVideo = video
+        update.supportsHolding = false
+        update.supportsGrouping = false
+        update.supportsUngrouping = false
+        update.supportsDTMF = false
+        if incoming {
+            callProvider.reportNewIncomingCall(with: id, update: update) { [weak self] error in
+                DispatchQueue.main.async {
+                    guard let self = self, self.systemID == id else { return }
+                    if error != nil { self.clearSystemCall(); return }
+                }
+            }
+        } else {
+            let action = CXStartCallAction(call: id, handle: handle)
+            action.isVideo = video
+            callController.request(CXTransaction(action: action)) { [weak self] error in
+                DispatchQueue.main.async {
+                    guard let self = self, self.systemID == id else { return }
+                    if error != nil { self.clearSystemCall(); return }
+                    self.callProvider.reportCall(with: id, updated: update)
+                }
+            }
+        }
+    }
+    func providerDidReset(_ provider: CXProvider) {
+        if let generation = systemGeneration { sendCallAction("end", generation: generation) }
+        clearSystemCall()
+        callAudioActive = false
+    }
+    func provider(_ provider: CXProvider, perform action: CXStartCallAction) {
+        guard action.callUUID == systemID else { action.fail(); return }
+        configureCallAudio()
+        provider.reportOutgoingCall(with: action.callUUID, startedConnectingAt: Date())
+        if systemConnected { provider.reportOutgoingCall(with: action.callUUID, connectedAt: Date()) }
+        action.fulfill()
+    }
+    func provider(_ provider: CXProvider, perform action: CXAnswerCallAction) {
+        guard action.callUUID == systemID, let generation = systemGeneration else { action.fail(); return }
+        configureCallAudio()
+        systemAnswered = true
+        sendCallAction("answer", generation: generation)
+        action.fulfill()
+    }
+    func provider(_ provider: CXProvider, perform action: CXEndCallAction) {
+        guard action.callUUID == systemID, let generation = systemGeneration else { action.fulfill(); return }
+        clearSystemCall()
+        sendCallAction("end", generation: generation)
+        action.fulfill()
+    }
+    func provider(_ provider: CXProvider, perform action: CXSetMutedCallAction) {
+        guard action.callUUID == systemID, let generation = systemGeneration else { action.fail(); return }
+        systemMuted = action.isMuted
+        sendCallAction("mute", generation: generation, value: action.isMuted)
+        action.fulfill()
+    }
+    func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
+        callAudioActive = true
+        web.evaluateJavaScript("document.getElementById('remoteVideo')?.play().catch(()=>{})", completionHandler: nil)
+    }
+    func provider(_ provider: CXProvider, didDeactivate audioSession: AVAudioSession) {
+        callAudioActive = false
     }
     private func notify(title: String, body: String) {
         let center = UNUserNotificationCenter.current()
