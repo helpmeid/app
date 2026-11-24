@@ -66,3 +66,6 @@ Redesigned chat lists, navigation, search, chat composer, dialer, settings, dial
 
 ## Version 1.1.0
 Version numbers now roll over at .9 (1.1.9 → 1.2.0). Improved floating-video controls with local or remote video selection, platform-specific fallback and clear failure messages. Native wrapper adds preliminary CallKit integration for system call UI, answer/end/mute actions and audio activation. Native build must be signed and installed; not tested on iPhone. No PushKit server or native WebRTC engine; Home Screen web apps cannot force system call indicators or persistent background video. 
+
+## Version 1.1.1
+Native AVKit video-call Picture in Picture renderer receives downscaled in-call frames locally through the trusted WKWebView bridge and requests automatic PiP when backgrounded. Native PiP is explicitly stopped at call end. This is experimental: WebKit may suspend the video source or JS bridge in background, so continuous live video is not guaranteed; a native WebRTC media engine is still needed for independent video rendering. Web PiP now requests playback without awaiting it first to preserve user activation. No way to force PiP on Home Screen web apps affected by WebKit bug 303885. Signed native rebuild and physical device tests required.
