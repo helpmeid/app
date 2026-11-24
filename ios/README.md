@@ -1,4 +1,4 @@
-# Native iPhone app (1.0.7)
+# Native iPhone app (1.0.9)
 
 This Xcode project builds a real iOS application with a UIKit shell and a persistent WKWebView running the existing HTTPS messaging client. It is not a PWA shortcut. The system icon can be switched among eight bundled presets using Settings > Appearance. iOS may show its own confirmation alert. A custom user photo can still be used inside the app, but not as a system app icon. The actual installed name is fixed by the signed app's Info.plist.
 
@@ -19,3 +19,6 @@ Settings > Notifications > Enable / test requests Apple notification permission 
 Use Calls > Call yourself or enter your own five-character code. Voice/video self calls test your own microphone level and camera without another peer or a network call. No audio is played back to avoid feedback. Existing old self messages remain stored in local data but no longer appear in the Messages list.
 
 The CI workflow builds an unsigned app bundle for compile checking. It cannot install on an ordinary iPhone until code signed. No Apple signing credentials are stored here.
+
+## Messaging and photos
+Read receipts are enabled by default, can be disabled in Settings > Privacy, and are queued until peers can exchange acknowledgements. Swipe right to leave a conversation or return from another tab. Profile, contact and custom icon pictures support a circular crop preview with drag, zoom, rotate and reset before saving.
