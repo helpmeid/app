@@ -16,5 +16,6 @@
 <key>NSMicrophoneUsageDescription</key><string>Allow voice and video calls, including testing your own microphone.</string>
 <key>NSCameraUsageDescription</key><string>Allow video calls and local camera tests.</string>
 <key>NSPhotoLibraryUsageDescription</key><string>Choose profile pictures and app artwork.</string>
+<key>UIBackgroundModes</key><array><string>audio</string></array>
 <key>WKAppBoundDomains</key><array><string>helpmeid.github.io</string></array>
 </dict></plist>
