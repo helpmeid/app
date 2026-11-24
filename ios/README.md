@@ -64,3 +64,5 @@ Version 1.1.7 adds finger-tracking transitions between the main tabs using actua
 Version 1.1.8 adds a liquid-glass inspired animated tab highlight to the shared interface.
 
 Version 1.1.9 refines the glass navigation and gesture recognition, including direct tab-bar dragging.
+
+Version 1.2.0 syncs the remote microphone mute indicator and invokes the web audio recovery hook on CallKit audio-session activation. The native changes require a new signed build and testing.
