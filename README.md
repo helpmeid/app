@@ -1,13 +1,18 @@
 # App for iPhone
 
-An installable web app served by GitHub Pages.
+A lightweight, local-first messaging and voice/video calling web app served by GitHub Pages.
 
-## First-time publishing
+## Install
+Open https://helpmeid.github.io/app/ in Safari, Share > Add to Home Screen, enable Open as Web App, and tap Add. GitHub Pages must be configured to deploy main / (root).
 
-Open repository Settings > Pages. Set Source to Deploy from a branch, select main and /(root), then Save. Once the deployment is ready, open https://helpmeid.github.io/app/ in Safari. Use Share > Add to Home Screen, enable Open as Web App if offered, and tap Add.
+## Connect with a friend
+Both users install the app and open Settings. Share a personal contact code, add the other user's code in Chats or People, and start a conversation. PeerJS 1.5.5 (loaded on demand from jsDelivr) uses its public signaling service and WebRTC for direct messaging and media. Both people need the app open and online; restrictive networks may prevent connections. There is no offline delivery server, account recovery, push calling, or background messaging. Delivery requires a recipient acknowledgment; unsuccessful messages can be retried manually.
 
-## Updates
+## Storage and appearance
+Messages, contact IDs, contacts, drafts, call history, profile and preferences are stored locally in the app's web storage. They survive ordinary updates, but iOS can clear web data. Export a JSON backup in Settings. Do not share the backup publicly. The name, icon and theme within the app are customizable. iOS manages the installed home-screen name/icon; Settings explains how to create a custom shortcut and export an icon.
 
-Every app change must increment the app-version meta tag in index.html (patch version by default). Current release: 1.0.1. GitHub Pages automatically republishes main. The app checks the deployed index on launch, when it returns to the foreground, when connectivity returns, and every 15 seconds while visible. When a newer version is available, it asks Update now or Later. Update now restarts the page with the latest published version; Later postpones the reminder for two minutes. iOS web apps cannot programmatically close and reopen themselves. Offline launch uses the most recently cached successful app page if available.
+## Power usage
+No hidden-page update polling; the signaling connection closes when hidden unless a call is active. Audio/video capture runs only for calls. The version check fetches a tiny JSON file every 15 seconds while active (every two minutes with Battery saver). Actual battery usage depends on device, network and calls; it has not been benchmarked.
 
-The home screen is a starter; add your app features to index.html. If adding external assets, use versioned filenames and adjust offline caching as needed. No native IPA or App Store account is needed.
+## Version policy
+Current release: 1.0.2. Every requested app change must increment both the app-version meta tag in index.html and version.json, preferably in the same commit. GitHub Pages republishes main. The app checks for updates on launch, foreground and connectivity restoration, and at the configured foreground interval. Update now saves local data and reloads; Later postpones the prompt for two minutes. A service worker retains the installed shell until an approved update.
