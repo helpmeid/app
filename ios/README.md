@@ -46,3 +46,5 @@ Version 1.0.20 declares the background audio mode and adds a voice-chat AVAudioS
 Version 1.0.21 redesigns the interface and introduces a full-screen dual-video call layout with a movable local preview and circular controls.
 
 Version 1.1.0 adds preliminary CallKit lifecycle integration for real peer calls, WKWebView picture-in-picture configuration and system call controls. Requires signed rebuild and device tests. WebRTC remains in WKWebView; no native media stack or VoIP push service.
+
+Version 1.1.1 adds an experimental AVKit PiP renderer and local video-frame bridge. It requests automatic native PiP on leaving a video call. This is not an independent native WebRTC engine and the frames may freeze when WKWebView is suspended. Build, sign and test on physical iPhone before relying on it.
