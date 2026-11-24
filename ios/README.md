@@ -58,3 +58,5 @@ Version 1.1.4 unifies horizontal swipe navigation throughout the web interface, 
 Version 1.1.5 adds interactive chat-back transitions that reveal the previous main screen as the chat moves.
 
 Version 1.1.6 improves read-receipt display and synchronization.
+
+Version 1.1.7 adds finger-tracking transitions between the main tabs using actual destination content.
