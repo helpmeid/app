@@ -78,3 +78,6 @@ Pin conversations and search within message history from chat settings. Search c
 
 ## Version 1.1.4
 Unified horizontal touch navigation: swipe between Chats, Calls, People and Settings; swipe right on contact rows to peek/open conversations; swipe right from the left edge of a conversation to return to the originating tab; swipe message bubbles to reply; swipe right to dismiss ordinary dialogs or minimize connected calls without hanging up. Mandatory account and loading dialogs and unanswered calls remain protected. Editing controls, photo cropping, floating local video dragging, and vertical scrolling retain their own gestures. JavaScript syntax, element references and 15 gesture-routing cases checked; physical iPhone touch testing remains necessary.
+
+## Version 1.1.5
+Swiping back from a conversation now reveals the actual previous main screen (including header, contacts, and navigation) behind the moving chat. The chat follows the finger and settles back if cancelled or slides away when completed. Return restores the prior tab, search and scroll position. No placeholder Back label is shown during this gesture. JavaScript syntax and element references checked; physical iPhone testing remains necessary.
