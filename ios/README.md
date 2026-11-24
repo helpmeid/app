@@ -56,3 +56,5 @@ Version 1.1.3 adds pinned chats, message search, unread indicators, ordered auto
 Version 1.1.4 unifies horizontal swipe navigation throughout the web interface, including safe dialog dismissal and active-call minimization.
 
 Version 1.1.5 adds interactive chat-back transitions that reveal the previous main screen as the chat moves.
+
+Version 1.1.6 improves read-receipt display and synchronization.
