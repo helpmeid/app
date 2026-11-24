@@ -60,3 +60,5 @@ Version 1.1.5 adds interactive chat-back transitions that reveal the previous ma
 Version 1.1.6 improves read-receipt display and synchronization.
 
 Version 1.1.7 adds finger-tracking transitions between the main tabs using actual destination content.
+
+Version 1.1.8 adds a liquid-glass inspired animated tab highlight to the shared interface.
