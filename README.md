@@ -72,3 +72,6 @@ Native AVKit video-call Picture in Picture renderer receives downscaled in-call 
 
 ## Version 1.1.2
 Queued messages automatically retry while connected, with bounded retry concurrency and backoff. Existing pending messages survive reloads. Older conversation history can be loaded in batches, and incoming messages no longer force scrolling to the bottom while reading older messages. Connected calls can be minimized within the app; the active-call bar provides return and hang-up controls. Improved update-modal safety and local data migration checks. Native background calling and screen capture still depend on device and OS support; no signed iPhone build or physical testing has been completed.
+
+## Version 1.1.3
+Pin conversations and search within message history from chat settings. Search contact lists by name, username or app number; unread chats and the Chats tab now show stronger unread indicators. The outbox limits delivery to one in-flight message per contact, and the app tries to preserve active media calls during signaling reconnection. A sustained media interruption ends the call rather than leaving an indefinitely stale connected screen. JavaScript syntax and element references checked; real-device and two-peer media testing remain outstanding.
