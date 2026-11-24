@@ -1,4 +1,4 @@
-# Native iPhone app (1.0.13)
+# Native iPhone app (1.0.14)
 
 This Xcode project builds a real iOS application with a UIKit shell and a persistent WKWebView running the existing HTTPS messaging client. It is not a PWA shortcut. The system icon can be switched among eight bundled presets using Settings > Appearance. iOS may show its own confirmation alert. A custom user photo can still be used inside the app, but not as a system app icon. The actual installed name is fixed by the signed app's Info.plist.
 
@@ -28,3 +28,5 @@ Version 1.0.11 adds hold-to-react actions, quoted replies, custom app numbers an
 Version 1.0.12 updates the Messenger-inspired chat interface and restores direct call controls in chats.
 
 Version 1.0.13 restores local self calls through standard call controls, adds live swipe previews and viewport recovery.
+
+Version 1.0.14 adds local contact deletion with optional chat and call history cleanup.
