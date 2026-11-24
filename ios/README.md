@@ -1,4 +1,4 @@
-# Native iPhone app (1.0.18)
+# Native iPhone app (1.0.19)
 
 This Xcode project builds a real iOS application with a UIKit shell and a persistent WKWebView running the existing HTTPS messaging client. It is not a PWA shortcut. The system icon can be switched among eight bundled presets using Settings > Appearance. iOS may show its own confirmation alert. A custom user photo can still be used inside the app, but not as a system app icon. The actual installed name is fixed by the signed app's Info.plist.
 
@@ -38,3 +38,5 @@ Version 1.0.16 adds mirrored front-camera preview, camera switching and configur
 Version 1.0.17 replaces the microphone meter with an audio-reactive profile-picture ring.
 
 Version 1.0.18 adds self-call ringing and acceptance, outgoing ringback and adaptive call-screen colors.
+
+Version 1.0.19 adds camera on/off controls, signaling retries and contact presence indicators.
