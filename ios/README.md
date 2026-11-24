@@ -1,0 +1,21 @@
+# Native iPhone app (1.0.7)
+
+This Xcode project builds a real iOS application with a UIKit shell and a persistent WKWebView running the existing HTTPS messaging client. It is not a PWA shortcut. The system icon can be switched among eight bundled presets using Settings > Appearance. iOS may show its own confirmation alert. A custom user photo can still be used inside the app, but not as a system app icon. The actual installed name is fixed by the signed app's Info.plist.
+
+## Build on macOS
+Install Xcode and XcodeGen (brew install xcodegen). In ios/ run:
+    python3 generate_icons.py
+    xcodegen generate
+    open MessengerApp.xcodeproj
+Select your own signing team in Signing & Capabilities and a unique bundle identifier if needed. Build to your connected iPhone, or archive and distribute through TestFlight using an Apple Developer account. The native app's local storage is separate from the existing installed web app; keep the original if it contains important messages.
+
+## Updates
+The web messaging client checks version.json and prompts before reloading when GitHub publishes a new version. Native code, bundled icons and app display name changes require a newly signed iOS build; TestFlight can distribute those updates. A native app cannot install arbitrary IPA updates on its own. App Store review rules apply to remote functionality; this is a development wrapper and has not been reviewed or approved.
+
+## Notifications
+Settings > Notifications > Enable / test requests Apple notification permission and posts a test alert. The native bridge shows local banners and badges for incoming messages and calls that reach the running client. Message previews can be disabled. It does not register APNs or deliver new alerts when the app is closed: that requires a message/push backend and Apple push configuration.
+
+## Self calls
+Use Calls > Call yourself or enter your own five-character code. Voice/video self calls test your own microphone level and camera without another peer or a network call. No audio is played back to avoid feedback. Existing old self messages remain stored in local data but no longer appear in the Messages list.
+
+The CI workflow builds an unsigned app bundle for compile checking. It cannot install on an ordinary iPhone until code signed. No Apple signing credentials are stored here.
