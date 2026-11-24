@@ -69,3 +69,6 @@ Version numbers now roll over at .9 (1.1.9 → 1.2.0). Improved floating-video c
 
 ## Version 1.1.1
 Native AVKit video-call Picture in Picture renderer receives downscaled in-call frames locally through the trusted WKWebView bridge and requests automatic PiP when backgrounded. Native PiP is explicitly stopped at call end. This is experimental: WebKit may suspend the video source or JS bridge in background, so continuous live video is not guaranteed; a native WebRTC media engine is still needed for independent video rendering. Web PiP now requests playback without awaiting it first to preserve user activation. No way to force PiP on Home Screen web apps affected by WebKit bug 303885. Signed native rebuild and physical device tests required.
+
+## Version 1.1.2
+Queued messages automatically retry while connected, with bounded retry concurrency and backoff. Existing pending messages survive reloads. Older conversation history can be loaded in batches, and incoming messages no longer force scrolling to the bottom while reading older messages. Connected calls can be minimized within the app; the active-call bar provides return and hang-up controls. Improved update-modal safety and local data migration checks. Native background calling and screen capture still depend on device and OS support; no signed iPhone build or physical testing has been completed.
