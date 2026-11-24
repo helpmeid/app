@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#101522">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="app-version" content="1.0.0">
+<meta name="app-version" content="1.0.1">
 <title>App</title>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
@@ -15,6 +15,7 @@
 :root{color-scheme:dark;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#101522;color:#f3f6fc}
 *{box-sizing:border-box}body{margin:0;min-height:100dvh;padding:calc(env(safe-area-inset-top) + 28px) 24px calc(env(safe-area-inset-bottom) + 24px);display:grid;place-items:center}
 main{width:min(100%,420px)}.logo{width:68px;height:68px;border-radius:20px;background:#506cf4;display:grid;place-items:center;font-size:32px;font-weight:750}h1{font-size:42px;letter-spacing:-1.8px;margin:20px 0 6px}p{color:#aeb9d0;line-height:1.5}.card{margin:24px 0;padding:20px;background:#1b2335;border:1px solid #303c54;border-radius:22px}.row{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#67d9a6;margin-right:7px}button{display:block;width:100%;border:0;border-radius:14px;padding:15px;font:inherit;font-weight:650;background:#506cf4;color:white;cursor:pointer;margin-top:18px}button:disabled{opacity:.6}a{color:#aebdff}small{color:#aeb9d0}
+dialog{width:min(calc(100% - 40px),380px);padding:24px;border:1px solid #39465e;border-radius:24px;background:#1b2335;color:#f3f6fc;box-shadow:0 20px 80px #0009}dialog::backdrop{background:#0009}dialog h2{margin:0;font-size:25px;letter-spacing:-.5px}dialog p{margin:12px 0 20px}dialog .actions{display:flex;gap:10px}dialog button{margin:0;flex:1}dialog .secondary{background:#303c54}#updateProgress{margin:12px 0 0;font-size:14px}
 </style>
 </head>
 <body>
@@ -28,38 +29,90 @@ main{width:min(100%,420px)}.logo{width:68px;height:68px;border-radius:20px;backg
 <p id="install" hidden>Install from Safari: Share → Add to Home Screen → Open as Web App.</p>
 <small>Updates are delivered from <a href="https://github.com/helpmeid/app" target="_blank" rel="noopener">GitHub</a>.</small>
 </main>
+<dialog id="updateDialog" aria-labelledby="updateTitle" aria-describedby="updateMessage">
+<h2 id="updateTitle">Update available</h2>
+<p id="updateMessage"></p>
+<div class="actions"><button id="later" class="secondary" type="button">Later</button><button id="updateNow" type="button">Update now</button></div>
+<p id="updateProgress" role="status" hidden></p>
+</dialog>
 <script>
 const version=document.querySelector('meta[name="app-version"]').content;
 const statusEl=document.getElementById('status'),button=document.getElementById('check'),dot=document.getElementById('dot');
+const dialog=document.getElementById('updateDialog'),message=document.getElementById('updateMessage'),now=document.getElementById('updateNow'),later=document.getElementById('later'),progress=document.getElementById('updateProgress');
 document.getElementById('version').textContent='v'+version;
 document.getElementById('install').hidden=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
-let checking=false;
-function status(message,ok){statusEl.textContent=message;dot.style.background=ok?'#67d9a6':'#f0b95b'}
-async function check(){
- if(checking||document.hidden)return;
- checking=true;button.disabled=true;status('Checking for updates…',true);
+let checking=false,installing=false,available=null,deferredVersion='',deferredUntil=0;
+const CHECK_INTERVAL=15000,REMIND_INTERVAL=120000;
+function status(text,ok){statusEl.textContent=text;dot.style.background=ok?'#67d9a6':'#f0b95b'}
+function newer(candidate,current){
+ if(!/^\d+\.\d+\.\d+$/.test(candidate)||!/^\d+\.\d+\.\d+$/.test(current))return false;
+ const a=candidate.split('.').map(Number),b=current.split('.').map(Number);
+ for(let i=0;i<3;i++){if(a[i]!==b[i])return a[i]>b[i]}
+ return false;
+}
+async function fetchLatest(){
+ const url=new URL('./index.html',location.href);url.searchParams.set('update',Date.now());
+ const res=await fetch(url,{cache:'no-store'});
+ if(!res.ok)throw new Error('Update unavailable');
+ const doc=new DOMParser().parseFromString(await res.text(),'text/html');
+ const latest=doc.querySelector('meta[name="app-version"]')?.content;
+ if(!latest||!/^\d+\.\d+\.\d+$/.test(latest))throw new Error('Invalid update');
+ return {version:latest,url:url.href};
+}
+function showPrompt(){
+ if(!available||dialog.open||installing||document.hidden)return;
+ message.textContent='Version '+available.version+' is ready to install. Update now to restart the app with the latest version?';
+ progress.hidden=true;now.disabled=false;later.disabled=false;
+ dialog.showModal();
+}
+function postpone(){
+ if(installing)return;
+ if(available){deferredVersion=available.version;deferredUntil=Date.now()+REMIND_INTERVAL;}
+ dialog.close();
+}
+later.addEventListener('click',postpone);
+dialog.addEventListener('cancel',e=>{e.preventDefault();postpone()});
+async function check(manual=false){
+ if(checking||installing||document.hidden)return;
+ checking=true;button.disabled=true;
+ if(manual||!available)status('Checking for updates…',true);
  try{
-  const url=new URL('./index.html',location.href);url.searchParams.set('update',Date.now());
-  const res=await fetch(url,{cache:'no-store'});
-  if(!res.ok)throw new Error('Update unavailable');
-  const doc=new DOMParser().parseFromString(await res.text(),'text/html');
-  const latest=doc.querySelector('meta[name="app-version"]')?.content;
-  if(!latest)throw new Error('Invalid update');
-  if(latest!==version){
-   status('Installing update…',true);
-   location.replace(url.href);
-   return;
+  const latest=await fetchLatest();
+  if(newer(latest.version,version)){
+   available=latest;
+   status('Update available · v'+latest.version,false);
+   if(dialog.open&&!installing)message.textContent='Version '+latest.version+' is ready to install. Update now to restart the app with the latest version?';
+   if(manual||deferredVersion!==latest.version||Date.now()>=deferredUntil)showPrompt();
+  }else{
+   available=null;
+   if(dialog.open)dialog.close();
+   status('Up to date',true);
   }
-  status('Up to date',true);
  }catch(e){status(navigator.onLine?'Update check unavailable':'Offline · saved version',false)}
  finally{checking=false;button.disabled=false}
 }
+now.addEventListener('click',async()=>{
+ if(installing||!available)return;
+ installing=true;now.disabled=true;later.disabled=true;button.disabled=true;
+ progress.hidden=false;progress.textContent='Installing update…';
+ status('Installing update…',true);
+ try{
+  const latest=await fetchLatest();
+  if(!newer(latest.version,version))throw new Error('Update not available');
+  // A standalone iOS web app cannot close and reopen itself. A fresh navigation restarts its page.
+  location.replace(latest.url);
+ }catch(e){
+  installing=false;now.disabled=false;later.disabled=false;button.disabled=false;
+  progress.textContent='Could not install. Check your connection and try again.';
+  status('Update available',false);
+ }
+});
 if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(()=>{});}
-button.addEventListener('click',check);
+button.addEventListener('click',()=>check(true));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)check()});
-window.addEventListener('online',check);
+window.addEventListener('online',()=>check());
 window.addEventListener('offline',()=>status('Offline · saved version',false));
-setInterval(check,60000);
+setInterval(()=>check(),CHECK_INTERVAL);
 check();
 </script>
 </body>
