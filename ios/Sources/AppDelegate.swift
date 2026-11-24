@@ -267,7 +267,7 @@ final class MessengerController: UIViewController, WKNavigationDelegate, WKUIDel
     }
     func provider(_ provider: CXProvider, didActivate audioSession: AVAudioSession) {
         callAudioActive = true
-        web.evaluateJavaScript("document.getElementById('remoteVideo')?.play().catch(()=>{})", completionHandler: nil)
+        web.evaluateJavaScript("if(typeof window.resumeCallAudio==='function'){window.resumeCallAudio()}else{document.getElementById('remoteVideo')?.play().catch(()=>{})}", completionHandler: nil)
     }
     func provider(_ provider: CXProvider, didDeactivate audioSession: AVAudioSession) {
         callAudioActive = false
