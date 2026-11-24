@@ -63,3 +63,6 @@ Active calls are preserved when the page is backgrounded where the OS permits; f
 
 ## Version 1.0.21
 Redesigned chat lists, navigation, search, chat composer, dialer, settings, dialogs and buttons with a consistent light/dark visual system. Full-screen FaceTime-inspired calls show remote video as the main view and a draggable local video tile when both cameras are on. When only the local camera is on, it fills the video stage; voice calls show the contact avatar and adaptive audio-reactive ring. Calls have labeled circular controls, connection status and duration. Camera switching, muting, screen sharing and supported picture-in-picture are retained. Device testing is still required.
+
+## Version 1.1.0
+Version numbers now roll over at .9 (1.1.9 → 1.2.0). Improved floating-video controls with local or remote video selection, platform-specific fallback and clear failure messages. Native wrapper adds preliminary CallKit integration for system call UI, answer/end/mute actions and audio activation. Native build must be signed and installed; not tested on iPhone. No PushKit server or native WebRTC engine; Home Screen web apps cannot force system call indicators or persistent background video. 
