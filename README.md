@@ -90,3 +90,6 @@ Interactive tab transitions now reveal the actual neighboring Chats, Calls, Peop
 
 ## Version 1.1.8
 Liquid-glass inspired bottom navigation uses a single translucent moving blue lens, highlights the destination while dragging between tabs, and settles smoothly on a completed or cancelled swipe. It respects light/dark appearance and reduced-motion settings. JavaScript syntax, ID references and six geometry cases checked; physical iPhone rendering remains untested.
+
+## Version 1.1.9
+Refined the moving glass lens with a stronger optical highlight, adaptive stretch, and direct tab-bar dragging. Swipes use earlier directional locking, recent touch velocity, final touch position, and frame-coalesced updates. Delayed list/message renders prevent replacing the original touch target during a gesture. Improved fast flicks, cancellation and accidental-click suppression; People now uses horizontal tab swipes, while right-swiping a chat row in Chats still previews the conversation. JavaScript syntax, element references, 11 gesture decision cases and seven glass geometry cases checked. Physical iPhone gesture and visual testing still required.
