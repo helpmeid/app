@@ -8,6 +8,6 @@ Open repository Settings > Pages. Set Source to Deploy from a branch, select mai
 
 ## Updates
 
-Edit index.html on main and increase the app-version meta tag for each release. GitHub Pages automatically republishes the branch. The app checks the deployed index on launch, when it returns to the foreground, when connectivity returns, and every minute while visible. If a different version is published it reloads automatically. Offline launch uses the most recently cached successful app page if available.
+Every app change must increment the app-version meta tag in index.html (patch version by default). Current release: 1.0.1. GitHub Pages automatically republishes main. The app checks the deployed index on launch, when it returns to the foreground, when connectivity returns, and every 15 seconds while visible. When a newer version is available, it asks Update now or Later. Update now restarts the page with the latest published version; Later postpones the reminder for two minutes. iOS web apps cannot programmatically close and reopen themselves. Offline launch uses the most recently cached successful app page if available.
 
 The home screen is a starter; add your app features to index.html. If adding external assets, use versioned filenames and adjust offline caching as needed. No native IPA or App Store account is needed.
