@@ -62,3 +62,5 @@ Version 1.1.6 improves read-receipt display and synchronization.
 Version 1.1.7 adds finger-tracking transitions between the main tabs using actual destination content.
 
 Version 1.1.8 adds a liquid-glass inspired animated tab highlight to the shared interface.
+
+Version 1.1.9 refines the glass navigation and gesture recognition, including direct tab-bar dragging.
