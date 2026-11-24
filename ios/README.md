@@ -42,3 +42,5 @@ Version 1.0.18 adds self-call ringing and acceptance, outgoing ringback and adap
 Version 1.0.19 adds camera on/off controls, signaling retries and contact presence indicators.
 
 Version 1.0.20 declares the background audio mode and adds a voice-chat AVAudioSession bridge during connected calls. A signed rebuild is necessary. The WKWebView still depends on iOS WebRTC/media lifecycle behavior; background calling is not guaranteed. Web screen sharing uses getDisplayMedia when available. Full native system-wide screen broadcasting would require a ReplayKit extension and native media integration, not included here.
+
+Version 1.0.21 redesigns the interface and introduces a full-screen dual-video call layout with a movable local preview and circular controls.
