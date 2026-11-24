@@ -54,3 +54,5 @@ Version 1.1.2 improves the shared web interface with a persistent outbox, histor
 Version 1.1.3 adds pinned chats, message search, unread indicators, ordered automatic delivery and improved connection recovery.
 
 Version 1.1.4 unifies horizontal swipe navigation throughout the web interface, including safe dialog dismissal and active-call minimization.
+
+Version 1.1.5 adds interactive chat-back transitions that reveal the previous main screen as the chat moves.
