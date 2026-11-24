@@ -1,6 +1,7 @@
 import UIKit
 import WebKit
 import UserNotifications
+import AVFoundation
 
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -29,6 +30,7 @@ final class MessengerController: UIViewController, WKNavigationDelegate, WKUIDel
     private var web: WKWebView!
     private var lastNotification = Date.distantPast
     private var iconChanging = false
+    private var callAudioActive = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,6 +96,20 @@ final class MessengerController: UIViewController, WKNavigationDelegate, WKUIDel
                   let title = body["title"] as? String, let text = body["body"] as? String else { return }
             lastNotification = Date()
             notify(title: String(title.prefix(60)), body: String(text.prefix(200)))
+        case "callAudio":
+            guard let active = body["active"] as? Bool, active != callAudioActive else { return }
+            do {
+                let session = AVAudioSession.sharedInstance()
+                if active {
+                    try session.setCategory(.playAndRecord, mode: .voiceChat, options: [.allowBluetooth, .defaultToSpeaker])
+                    try session.setActive(true)
+                } else {
+                    try session.setActive(false, options: .notifyOthersOnDeactivation)
+                }
+                callAudioActive = active
+            } catch {
+                NSLog("Call audio session: %@", String(describing: error))
+            }
         case "badge":
             let count = max(0, min(9999, body["count"] as? Int ?? 0))
             UIApplication.shared.applicationIconBadgeNumber = count
