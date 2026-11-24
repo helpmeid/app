@@ -75,3 +75,6 @@ Queued messages automatically retry while connected, with bounded retry concurre
 
 ## Version 1.1.3
 Pin conversations and search within message history from chat settings. Search contact lists by name, username or app number; unread chats and the Chats tab now show stronger unread indicators. The outbox limits delivery to one in-flight message per contact, and the app tries to preserve active media calls during signaling reconnection. A sustained media interruption ends the call rather than leaving an indefinitely stale connected screen. JavaScript syntax and element references checked; real-device and two-peer media testing remain outstanding.
+
+## Version 1.1.4
+Unified horizontal touch navigation: swipe between Chats, Calls, People and Settings; swipe right on contact rows to peek/open conversations; swipe right from the left edge of a conversation to return to the originating tab; swipe message bubbles to reply; swipe right to dismiss ordinary dialogs or minimize connected calls without hanging up. Mandatory account and loading dialogs and unanswered calls remain protected. Editing controls, photo cropping, floating local video dragging, and vertical scrolling retain their own gestures. JavaScript syntax, element references and 15 gesture-routing cases checked; physical iPhone touch testing remains necessary.
