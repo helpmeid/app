@@ -49,6 +49,8 @@ final class MessengerController: UIViewController, WKNavigationDelegate, WKUIDel
     private var systemAnswered = false
     private var systemConnected = false
     private var systemMuted = false
+    private let callPiP = CallPictureInPicture()
+    private var pipGeneration: Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,6 +76,11 @@ final class MessengerController: UIViewController, WKNavigationDelegate, WKUIDel
             web.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             web.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+        callPiP.status = { [weak self] generation, status in
+            guard let self = self, self.pipGeneration == generation else { return }
+            guard let data = try? JSONSerialization.data(withJSONObject: [generation, status]), let json = String(data: data, encoding: .utf8) else { return }
+            self.web.evaluateJavaScript("window.nativePiPStatus && window.nativePiPStatus(..." + json + ")", completionHandler: nil)
+        }
         web.load(URLRequest(url: home, cachePolicy: .useProtocolCachePolicy))
     }
 
@@ -115,6 +122,20 @@ final class MessengerController: UIViewController, WKNavigationDelegate, WKUIDel
                   let title = body["title"] as? String, let text = body["body"] as? String else { return }
             lastNotification = Date()
             notify(title: String(title.prefix(60)), body: String(text.prefix(200)))
+        case "pipPrepare":
+            guard let generation = body["generation"] as? Int, callAudioActive || systemConnected else { return }
+            pipGeneration = generation
+            callPiP.prepare(source: web, generation: generation)
+        case "pipFrame":
+            guard let generation = body["generation"] as? Int, generation == pipGeneration, let data = body["data"] as? String else { return }
+            callPiP.pushFrame(data, generation: generation)
+        case "pipToggle":
+            guard let generation = body["generation"] as? Int, generation == pipGeneration else { return }
+            callPiP.toggle(generation: generation)
+        case "pipStop":
+            guard let generation = body["generation"] as? Int, generation == pipGeneration else { return }
+            pipGeneration = nil
+            callPiP.stop()
         case "systemCallStart":
             guard let generation = body["generation"] as? Int, let name = body["name"] as? String else { return }
             startSystemCall(generation: generation, name: String(name.prefix(60)), video: body["video"] as? Bool ?? false, incoming: body["incoming"] as? Bool ?? false)
@@ -212,6 +233,8 @@ final class MessengerController: UIViewController, WKNavigationDelegate, WKUIDel
         }
     }
     func providerDidReset(_ provider: CXProvider) {
+        pipGeneration = nil
+        callPiP.stop()
         if let generation = systemGeneration { sendCallAction("end", generation: generation) }
         clearSystemCall()
         callAudioActive = false
@@ -285,6 +308,14 @@ final class MessengerController: UIViewController, WKNavigationDelegate, WKUIDel
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in completionHandler(nil) })
         alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in completionHandler(alert.textFields?.first?.text) })
         present(alert, animated: true)
+    }
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        pipGeneration = nil
+        callPiP.stop()
+        if let id = systemID { callProvider.reportCall(with: id, endedAt: Date(), reason: .failed) }
+        clearSystemCall()
+        callAudioActive = false
+        webView.reload()
     }
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         guard (error as NSError).code != NSURLErrorCancelled else { return }
