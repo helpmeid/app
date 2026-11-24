@@ -1,119 +1,119 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#101522">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="app-version" content="1.0.1">
-<title>App</title>
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" href="./icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="./icon.svg">
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101218"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="app-version" content="1.0.2"><title>App</title><link rel="manifest" href="./manifest.webmanifest"><link rel="apple-touch-icon" href="./icon.svg"><link rel="icon" href="./icon.svg">
 <style>
-:root{color-scheme:dark;font:16px -apple-system,BlinkMacSystemFont,sans-serif;background:#101522;color:#f3f6fc}
-*{box-sizing:border-box}body{margin:0;min-height:100dvh;padding:calc(env(safe-area-inset-top) + 28px) 24px calc(env(safe-area-inset-bottom) + 24px);display:grid;place-items:center}
-main{width:min(100%,420px)}.logo{width:68px;height:68px;border-radius:20px;background:#506cf4;display:grid;place-items:center;font-size:32px;font-weight:750}h1{font-size:42px;letter-spacing:-1.8px;margin:20px 0 6px}p{color:#aeb9d0;line-height:1.5}.card{margin:24px 0;padding:20px;background:#1b2335;border:1px solid #303c54;border-radius:22px}.row{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#67d9a6;margin-right:7px}button{display:block;width:100%;border:0;border-radius:14px;padding:15px;font:inherit;font-weight:650;background:#506cf4;color:white;cursor:pointer;margin-top:18px}button:disabled{opacity:.6}a{color:#aebdff}small{color:#aeb9d0}
-dialog{width:min(calc(100% - 40px),380px);padding:24px;border:1px solid #39465e;border-radius:24px;background:#1b2335;color:#f3f6fc;box-shadow:0 20px 80px #0009}dialog::backdrop{background:#0009}dialog h2{margin:0;font-size:25px;letter-spacing:-.5px}dialog p{margin:12px 0 20px}dialog .actions{display:flex;gap:10px}dialog button{margin:0;flex:1}dialog .secondary{background:#303c54}#updateProgress{margin:12px 0 0;font-size:14px}
-</style>
-</head>
-<body>
-<main>
-<div class="logo" aria-hidden="true">A</div>
-<h1>App</h1><p>Your GitHub-powered iPhone app.</p>
-<section class="card" aria-label="Update status">
-<div class="row"><span><span class="dot" id="dot"></span><span id="status" role="status" aria-live="polite">Checking for updates…</span></span><small id="version"></small></div>
-<button id="check" type="button">Check for updates</button>
-</section>
-<p id="install" hidden>Install from Safari: Share → Add to Home Screen → Open as Web App.</p>
-<small>Updates are delivered from <a href="https://github.com/helpmeid/app" target="_blank" rel="noopener">GitHub</a>.</small>
-</main>
-<dialog id="updateDialog" aria-labelledby="updateTitle" aria-describedby="updateMessage">
-<h2 id="updateTitle">Update available</h2>
-<p id="updateMessage"></p>
-<div class="actions"><button id="later" class="secondary" type="button">Later</button><button id="updateNow" type="button">Update now</button></div>
-<p id="updateProgress" role="status" hidden></p>
-</dialog>
+:root{font:16px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color-scheme:light dark;--bg:#fff;--surface:#f3f5f8;--text:#141720;--muted:#6a7282;--line:#e5e8ee;--accent:#087aff;--bubble:#ebedf2;--nav:rgba(255,255,255,.97)}
+@media(prefers-color-scheme:dark){:root{--bg:#101218;--surface:#1c2029;--text:#f5f6fa;--muted:#9da7b8;--line:#2b303d;--accent:#397fff;--bubble:#252b37;--nav:#101218}}
+:root[data-theme=light]{color-scheme:light;--bg:#fff;--surface:#f3f5f8;--text:#141720;--muted:#6a7282;--line:#e5e8ee;--accent:#087aff;--bubble:#ebedf2;--nav:#fff}:root[data-theme=dark]{color-scheme:dark;--bg:#101218;--surface:#1c2029;--text:#f5f6fa;--muted:#9da7b8;--line:#2b303d;--accent:#397fff;--bubble:#252b37;--nav:#101218}
+*{box-sizing:border-box} [hidden]{display:none!important}body{margin:0;background:var(--bg);color:var(--text);height:100dvh;overflow:hidden;overscroll-behavior:none}button,input,textarea,select{font:inherit}button{border:0;cursor:pointer;color:inherit;background:none;touch-action:manipulation}button:disabled{opacity:.5}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}button:active{opacity:.7}a{color:var(--accent)}h1,h2,h3,p{margin:0}small,.muted{color:var(--muted)}.muted{font-size:14px}.app{height:100%;max-width:720px;margin:auto;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);position:relative}
+header{padding:12px 18px 10px;flex:none}.brand{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:650;color:var(--muted)}.brand span:first-child{font-size:18px}.header-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:12px}h1{font-size:35px;letter-spacing:-1.3px;line-height:1.1}.round{width:42px;height:42px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-size:22px;flex-shrink:0}.round.accent{background:var(--accent);color:white}.status{font-size:12px;color:var(--muted);margin-top:6px}.page{flex:1;min-height:0;overflow:auto;padding:0 18px 20px}.search{width:100%;border:0;border-radius:15px;background:var(--surface);padding:13px 16px;color:var(--text);margin:4px 0 12px;outline-offset:-2px}.contact-row{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:12px 0;min-width:0}.avatar{width:51px;height:51px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:22px;font-weight:700;color:white}.contact-copy{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}.contact-copy strong{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ellipsis{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.row-side{display:flex;flex-direction:column;align-items:flex-end;gap:5px}.unread{background:var(--accent);color:#fff;border-radius:20px;padding:2px 7px;font-size:11px}.person-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line)}.empty{text-align:center;padding:65px 12px 25px;display:flex;flex-direction:column;align-items:center;gap:10px}.empty-icon{font-size:34px;background:var(--surface);border-radius:24px;padding:18px;margin-bottom:6px}.empty h2{font-size:21px}.empty p{max-width:270px;line-height:1.5}.primary,.secondary,.danger{padding:12px 17px;border-radius:13px;font-weight:650;min-height:43px}.primary{color:#fff;background:var(--accent)}.secondary{background:var(--surface)}.danger{background:#df394b;color:#fff}.empty .primary{margin-top:6px}nav{flex:none;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:var(--nav);padding:7px 7px calc(8px + env(safe-area-inset-bottom))}nav button{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;color:var(--muted);font-size:11px;font-weight:650;min-height:47px}nav svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}nav .selected{color:var(--accent)}
+.chat{flex:1;display:flex;flex-direction:column;min-height:0}.chat-head{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--line)}.chat-head .avatar{width:38px;height:38px;font-size:17px}.chat-head strong{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.chat-head .round{width:38px;height:38px;color:var(--accent)}.thread{flex:1;overflow:auto;min-height:0;padding:14px 15px}.message{display:flex;flex-direction:column;align-items:flex-start;margin:9px 0}.message.mine{align-items:flex-end}.bubble{max-width:82%;padding:10px 14px;border-radius:20px;background:var(--bubble);white-space:pre-wrap;overflow-wrap:anywhere}.mine .bubble{color:white;background:var(--accent)}.message-meta{font-size:11px;color:var(--muted);margin:3px 6px;display:flex;align-items:center;gap:5px}.tiny{font-size:11px;color:var(--accent);padding:2px}.conversation-start{text-align:center;color:var(--muted);font-size:14px;margin:35px 0}.composer{display:flex;align-items:flex-end;gap:8px;padding:9px 12px calc(9px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}.composer textarea{flex:1;min-width:0;border:0;border-radius:23px;background:var(--surface);padding:12px 15px;resize:none;color:var(--text);font-size:16px;min-height:44px}.composer button{height:44px;width:44px}
+.group-title{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700;margin:19px 0 8px}.settings-card{background:var(--surface);border-radius:17px;padding:4px 14px}.setting{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:54px;padding:10px 0;border-bottom:1px solid var(--line)}.setting:last-child{border-bottom:0}.setting>div{min-width:0}.setting input:not([type=checkbox]),.setting select{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:8px;width:min(50%,190px);font-size:16px}.setting input[type=checkbox]{appearance:none;width:44px;height:25px;border-radius:16px;background:var(--muted);position:relative;flex:none;cursor:pointer}.setting input[type=checkbox]:checked{background:var(--accent)}.setting input[type=checkbox]:before{content:"";position:absolute;width:19px;height:19px;border-radius:50%;background:white;top:3px;left:3px}.setting input[type=checkbox]:checked:before{left:22px}.setting button{color:var(--accent);text-align:right}.code{font-family:ui-monospace,monospace;font-size:12px;word-break:break-all;margin-top:8px;line-height:1.6}.settings-actions{display:flex;gap:8px;padding:8px 0 12px}.settings-actions button{flex:1}.icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 0}.icon-choice{font-size:27px;border-radius:14px;min-height:52px;background:var(--bg);border:2px solid transparent}.icon-choice[aria-pressed=true]{border-color:var(--accent)}.note{font-size:12px;color:var(--muted);line-height:1.5;margin:9px 0 14px}
+dialog{width:min(calc(100% - 32px),390px);border:1px solid var(--line);border-radius:24px;background:var(--bg);color:var(--text);padding:23px;box-shadow:0 10px 45px #0003}dialog::backdrop{background:#0008}dialog h2{font-size:23px;letter-spacing:-.4px;margin-bottom:10px}dialog p{color:var(--muted);line-height:1.5;margin-bottom:17px}dialog input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--surface);color:var(--text);margin:5px 0 12px;font-size:16px}.actions{display:flex;gap:9px;margin-top:10px}.actions button{flex:1}dialog label{font-size:13px;color:var(--muted)}#callDialog{text-align:center}#remoteVideo{width:100%;border-radius:14px;background:#111;max-height:50vh}#localVideo{width:90px;max-height:120px;border-radius:12px;margin:5px auto}#remoteVideo[hidden]{display:block!important;width:1px;height:1px;opacity:0;position:absolute}#toast{position:absolute;z-index:10;bottom:calc(83px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);max-width:90%;width:max-content;background:#242a36;color:white;padding:11px 16px;border-radius:14px;font-size:13px;box-shadow:0 5px 16px #0003}
+</style></head><body><main class="app">
+<header id="mainHeader"><div class="brand"><span id="brandIcon">💬</span><span id="brand">App</span></div><div class="header-row"><h1 id="pageTitle">Chats</h1><button id="addContact" class="round accent" aria-label="Add contact">＋</button></div><div class="status" id="networkStatus" role="status">Offline</div></header>
+<section class="page" id="chats"><input id="search" class="search" type="search" placeholder="Search conversations" aria-label="Search conversations"><div id="chatList"></div></section>
+<section class="page" id="calls" hidden><div id="callList"></div></section>
+<section class="page" id="people" hidden><div class="settings-card"><div class="setting"><div><strong>Find your friends</strong><p class="muted">Share your personal code from Settings.</p></div></div></div><div id="peopleList"></div></section>
+<section class="page" id="settings" hidden>
+<h2 class="group-title">Your profile</h2><div class="settings-card"><label class="setting">Display name<input id="profileName" maxlength="60" autocomplete="nickname"></label><div class="setting"><div><strong>My contact code</strong><p id="myCode" class="code"></p></div></div><div class="settings-actions"><button id="copyCode" class="secondary">Copy code</button><button id="shareCode" class="primary">Share code</button></div></div>
+<h2 class="group-title">Appearance</h2><div class="settings-card"><label class="setting">App name<input id="appName" maxlength="24"></label><label class="setting">Theme<select id="theme"><option value="auto">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label><div class="setting"><strong>In-app icon</strong></div><div id="iconChoices" class="icon-grid"></div><div class="setting"><span>Home screen icon &amp; name</span><button id="renameHelp">How to change</button></div></div><p class="note">Your in-app name and icon are saved on this phone. iOS controls the installed home screen icon and name.</p>
+<h2 class="group-title">Connection &amp; battery</h2><div class="settings-card"><label class="setting"><div>Online messaging<p class="muted">Connect to friends while open</p></div><input id="onlineToggle" type="checkbox"></label><label class="setting"><div>Battery saver<p class="muted">Check updates every 2 minutes</p></div><input id="batteryToggle" type="checkbox"></label><div class="setting"><span>Connection</span><small id="connection">Offline</small></div></div><p class="note">No background polling. Both friends must be online in the app for delivery and calls. Some networks block peer-to-peer connections.</p>
+<h2 class="group-title">Storage &amp; updates</h2><div class="settings-card"><div class="setting"><span>Local data</span><button id="exportData">Export backup</button></div><div class="setting"><div>App version <small id="version"></small><p id="updateStatus" class="muted" role="status">Checking…</p></div><button id="checkUpdate">Check now</button></div></div><p class="note">Chats, contacts, drafts, call history and preferences are saved in this app's local storage. iOS may clear web data; export a backup for safekeeping.</p></section>
+<section id="chatView" class="chat" hidden><div class="chat-head"><button id="back" class="round" aria-label="Back">‹</button><div id="chatAvatar"></div><strong id="chatName"></strong><button id="voice" class="round" aria-label="Voice call">☎</button><button id="video" class="round" aria-label="Video call">▣</button></div><div id="thread" class="thread"></div><form id="sendForm" class="composer"><textarea id="compose" rows="1" maxlength="4000" placeholder="Message" aria-label="Message"></textarea><button class="round accent" aria-label="Send message">↑</button></form></section>
+<nav id="nav" aria-label="Main tabs">
+<button data-tab="chats"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-9 8.5 10 10 0 0 1-3.5-.7L4 21l1.3-4.1A8 8 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5Z"/></svg>Chats</button>
+<button data-tab="calls"><svg viewBox="0 0 24 24"><path d="M6 3 3 6c0 8.3 6.7 15 15 15l3-3-5-4-3 3a12 12 0 0 1-6-6l3-3-4-5Z"/></svg>Calls</button>
+<button data-tab="people"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 5a3 3 0 0 1 0 6m2 3a5 5 0 0 1 3 5"/></svg>People</button>
+<button data-tab="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m10 3-1 3-3 1-3 3 2 2-1 3 3 3 3-1 2 4 3-2 1-3 3-1 2-3-2-2 1-3-3-3-3 1-2-2Z"/></svg>Settings</button></nav>
+<div id="toast" role="status" hidden></div></main>
+<dialog id="contactDialog"><h2>Add contact</h2><p>Enter the contact code shown in your friend's Settings.</p><form id="contactForm"><label>Contact code<input id="contactCode" required autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="msg-…"></label><label>Name (optional)<input id="contactName" maxlength="60" placeholder="Friend's name"></label><div class="actions"><button type="button" class="secondary" data-close="contactDialog">Cancel</button><button class="primary">Add</button></div></form></dialog>
+<dialog id="callDialog"><h2 id="callTitle"></h2><p id="callState" role="status"></p><video id="remoteVideo" autoplay playsinline hidden></video><video id="localVideo" autoplay playsinline muted hidden></video><div class="actions"><button id="acceptCall" class="primary">Accept</button><button id="muteCall" class="secondary">Mute</button><button id="endCall" class="danger">End call</button></div></dialog>
+<dialog id="updateDialog"><h2>Update available</h2><p id="updateMessage"></p><div class="actions"><button id="later" class="secondary">Later</button><button id="updateNow" class="primary">Update now</button></div></dialog>
+<dialog id="renameDialog"><h2>Home screen appearance</h2><p>iOS doesn't let this web app change its installed icon or label automatically. You can customize the label when adding it from Safari. To use a custom icon, create an Open URL shortcut in Apple's Shortcuts app, then choose Add to Home Screen and pick a picture. This shortcut opens the website and may not behave like the installed standalone app.</p><button class="primary" data-close="renameDialog">Got it</button></dialog>
 <script>
-const version=document.querySelector('meta[name="app-version"]').content;
-const statusEl=document.getElementById('status'),button=document.getElementById('check'),dot=document.getElementById('dot');
-const dialog=document.getElementById('updateDialog'),message=document.getElementById('updateMessage'),now=document.getElementById('updateNow'),later=document.getElementById('later'),progress=document.getElementById('updateProgress');
-document.getElementById('version').textContent='v'+version;
-document.getElementById('install').hidden=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
-let checking=false,installing=false,available=null,deferredVersion='',deferredUntil=0;
-const CHECK_INTERVAL=15000,REMIND_INTERVAL=120000;
-function status(text,ok){statusEl.textContent=text;dot.style.background=ok?'#67d9a6':'#f0b95b'}
-function newer(candidate,current){
- if(!/^\d+\.\d+\.\d+$/.test(candidate)||!/^\d+\.\d+\.\d+$/.test(current))return false;
- const a=candidate.split('.').map(Number),b=current.split('.').map(Number);
- for(let i=0;i<3;i++){if(a[i]!==b[i])return a[i]>b[i]}
- return false;
+'use strict';
+const $=id=>document.getElementById(id), version=document.querySelector('meta[name=app-version]').content;
+const KEY='helpmeid.app.data.v2', icons=['💬','⚡','🌙','💙','🔥','🟣','⭐','🪐'];
+const uid=()=>crypto.randomUUID();
+let db={id:'msg-'+uid(),profile:'Me',name:'App',icon:'💬',theme:'auto',online:true,battery:false,contacts:{},messages:{},calls:[],drafts:{},unread:{}};
+try{const stored=JSON.parse(localStorage.getItem(KEY)||'null');if(stored&&stored.id)db={...db,...stored};}catch(e){}
+let storageOK=true;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db));storageOK=true;return true}catch(e){storageOK=false;toast('Phone storage is full or unavailable. Changes may not save.');return false}}
+save();
+function toast(s){$('toast').textContent=s;$('toast').hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').hidden=true,4200)}
+function node(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
+function btn(txt,fn,cls='secondary'){const e=node('button',cls,txt);e.type='button';e.onclick=fn;return e}
+function validID(v){return /^msg-[a-f0-9-]{36}$/i.test(v)}
+function contact(id,name){if(!validID(id)||id===db.id)return null;if(!db.contacts[id])db.contacts[id]={name:(name||'New contact').slice(0,60),color:['#316fe8','#a257d4','#0e9e8e','#df7750'][Object.keys(db.contacts).length%4]};return db.contacts[id]}
+function label(id){return db.contacts[id]?.name||'Unknown contact'}
+function avatar(id){const e=node('div','avatar',label(id).slice(0,1).toUpperCase());e.style.background=db.contacts[id]?.color||'#316fe8';return e}
+function listFor(id){return db.messages[id]||(db.messages[id]=[])}
+function stamp(t){return new Date(t).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}
+let tab='chats',active=null,filter='';
+function appearance(){document.documentElement.dataset.theme=db.theme;$('brand').textContent=db.name;$('brandIcon').textContent=db.icon;document.title=db.name;$('appName').value=db.name;$('profileName').value=db.profile;$('myCode').textContent=db.id;$('theme').value=db.theme;$('onlineToggle').checked=db.online;$('batteryToggle').checked=db.battery;$('version').textContent='v'+version;$('iconChoices').replaceChildren(...icons.map(i=>{const b=btn(i,()=>{db.icon=i;save();appearance()},'icon-choice');b.setAttribute('aria-pressed',String(db.icon===i));return b}))}
+function go(t){active=null;tab=t;filter='';$('search').value='';render()}
+function openChat(id){if(!contact(id))return;active=id;tab='chats';db.unread[id]=0;save();render();$('compose').value=db.drafts[id]||'';scrollBottom()}
+function scrollBottom(){requestAnimationFrame(()=>{$('thread').scrollTop=$('thread').scrollHeight})}
+function render(){document.querySelectorAll('[data-tab]').forEach(b=>{b.classList.toggle('selected',b.dataset.tab===tab);b.setAttribute('aria-current',b.dataset.tab===tab?'page':'false')});for(const t of ['chats','calls','people','settings'])$(t).hidden=tab!==t||!!active;$('chatView').hidden=!active;$('nav').hidden=!!active;$('mainHeader').hidden=!!active;
+ if(active){$('chatName').textContent=label(active);$('chatAvatar').replaceChildren(avatar(active));renderThread();return}
+ $('pageTitle').textContent={chats:'Chats',calls:'Calls',people:'People',settings:'Settings'}[tab];
+ $('addContact').hidden=tab==='settings';$('addContact').textContent=tab==='calls'?'New call':'＋';
+ if(tab==='chats')renderChats();if(tab==='calls')renderCalls();if(tab==='people')renderPeople();if(tab==='settings')appearance();
 }
-async function fetchLatest(){
- const url=new URL('./index.html',location.href);url.searchParams.set('update',Date.now());
- const res=await fetch(url,{cache:'no-store'});
- if(!res.ok)throw new Error('Update unavailable');
- const doc=new DOMParser().parseFromString(await res.text(),'text/html');
- const latest=doc.querySelector('meta[name="app-version"]')?.content;
- if(!latest||!/^\d+\.\d+\.\d+$/.test(latest))throw new Error('Invalid update');
- return {version:latest,url:url.href};
+function empty(parent,title,sub,action){const e=node('div','empty');e.append(node('div','empty-icon',title==='No calls yet'?'☎':'💬'),node('h2','',title),node('p','muted',sub));if(action)e.append(btn('Add a contact',action,'primary'));parent.append(e)}
+function contactRow(id,sub,action){const b=node('button','contact-row');b.type='button';const copy=node('div','contact-copy');copy.append(node('strong','',label(id)),node('span','muted ellipsis',sub));b.append(avatar(id),copy);b.onclick=action;return b}
+function renderChats(){const root=$('chatList');root.replaceChildren();let ids=Object.keys(db.contacts).filter(id=>label(id).toLowerCase().includes(filter.toLowerCase()));ids.sort((a,b)=>(listFor(b).at(-1)?.time||0)-(listFor(a).at(-1)?.time||0));for(const id of ids){const last=listFor(id).at(-1),r=contactRow(id,last?(last.mine?'You: ':'')+last.text:'Start a conversation',()=>openChat(id));const side=node('div','row-side');if(last)side.append(node('small','muted',stamp(last.time)));if(db.unread[id])side.append(node('span','unread',String(db.unread[id])));r.append(side);root.append(r)}if(!ids.length)empty(root,filter?'No matches':'No messages yet',filter?'Try another search.':'Add a friend using their personal contact code.',filter?null:showAdd)}
+function renderPeople(){const root=$('peopleList');root.replaceChildren();for(const id of Object.keys(db.contacts)){const r=node('div','person-row');r.append(contactRow(id,'Tap to message',()=>openChat(id)),btn('☎',()=>startCall(id,false),'round'),btn('⋯',()=>editContact(id),'round'));root.append(r)}if(!Object.keys(db.contacts).length)empty(root,'No contacts yet','Share your code or add a friend.',showAdd)}
+function renderCalls(){const root=$('callList');root.replaceChildren();for(const c of [...db.calls].reverse().slice(0,100)){const r=node('div','person-row');r.append(contactRow(c.id,(c.incoming?'Incoming':'Outgoing')+' '+(c.video?'video':'voice')+' · '+c.status+' · '+stamp(c.time),()=>openChat(c.id)),btn('☎',()=>startCall(c.id,c.video),'round'));root.append(r)}if(!db.calls.length)empty(root,'No calls yet','Your voice and video call history will appear here.',showAdd)}
+function renderThread(){if(!active)return;const root=$('thread'),near=root.scrollHeight-root.scrollTop-root.clientHeight<100;root.replaceChildren();for(const m of listFor(active).slice(-150)){const e=node('div','message '+(m.mine?'mine':'theirs'));e.append(node('div','bubble',m.text));const foot=node('div','message-meta',stamp(m.time)+(m.mine?' · '+m.state:''));if(m.mine&&['Not delivered','Pending'].includes(m.state))foot.append(btn('Retry',()=>sendPacket(active,m),'tiny'));e.append(foot);root.append(e)}if(!root.children.length)root.append(node('p','conversation-start','Start a conversation with '+label(active)+'.'));if(near)scrollBottom()}
+function showAdd(){$('contactCode').value='';$('contactName').value='';$('contactDialog').showModal()}
+function editContact(id){const name=prompt('Contact name',label(id));if(name&&name.trim()){db.contacts[id].name=name.trim().slice(0,60);save();render()}}
+$('contactForm').onsubmit=e=>{e.preventDefault();const id=$('contactCode').value.trim().toLowerCase();if(!validID(id)||id===db.id){toast('Enter a valid contact code from another phone.');return}contact(id,$('contactName').value.trim());if($('contactName').value.trim())db.contacts[id].name=$('contactName').value.trim().slice(0,60);save();$('contactDialog').close();openChat(id)};
+async function copyCode(){try{await navigator.clipboard.writeText(db.id);toast('Contact code copied')}catch(e){prompt('Copy your contact code',db.id)}}
+$('copyCode').onclick=copyCode;$('shareCode').onclick=async()=>{if(navigator.share){try{await navigator.share({title:db.name,text:'My contact code: '+db.id,url:'https://helpmeid.github.io/app/'})}catch(e){}}else copyCode()};
+$('addContact').onclick=showAdd;$('back').onclick=()=>go('chats');$('search').oninput=e=>{filter=e.target.value;renderChats()};document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>go(b.dataset.tab));
+$('compose').oninput=()=>{if(active){db.drafts[active]=$('compose').value;save()}};
+$('sendForm').onsubmit=e=>{e.preventDefault();const text=$('compose').value.trim();if(!active||!text)return;const id=active,m={id:uid(),text:text.slice(0,4000),time:Date.now(),mine:true,state:'Pending'};listFor(id).push(m);db.drafts[id]='';$('compose').value='';save();renderThread();scrollBottom();sendPacket(id,m)};
+let peer=null,peerReady=false,loadingPeer=null,reconnectTimer=null;
+const connections=new Set(),pending=new Map();
+function networkStatus(s){$('networkStatus').textContent=s;$('connection').textContent=s}
+function loadPeer(){if(window.Peer)return Promise.resolve();if(loadingPeer)return loadingPeer;loadingPeer=new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/peerjs@1.5.5/dist/peerjs.min.js';s.async=true;s.onload=()=>window.Peer?res():rej(Error('Peer unavailable'));s.onerror=()=>rej(Error('Network library unavailable'));document.head.append(s)}).catch(e=>{loadingPeer=null;throw e});return loadingPeer}
+async function connectPeer(){if(!db.online||document.hidden||!navigator.onLine||peer)return;networkStatus('Connecting…');try{await loadPeer();if(peer||!db.online||document.hidden)return;const p=new Peer(db.id,{debug:0});peer=p;p.on('open',()=>{if(peer!==p)return;peerReady=true;networkStatus('Online')});p.on('connection',c=>{if(!validID(c.peer)||c.peer===db.id){c.close();return}wire(c)});p.on('call',incomingCall);p.on('disconnected',()=>{if(peer!==p)return;peerReady=false;networkStatus('Reconnecting…');clearTimeout(reconnectTimer);reconnectTimer=setTimeout(()=>{if(peer===p&&db.online&&!document.hidden&&!p.destroyed)p.reconnect()},5000)});p.on('error',e=>{if(peer!==p)return;if(e.type==='peer-unavailable')return;networkStatus('Connection unavailable');if(p.destroyed){peer=null;peerReady=false}})}catch(e){networkStatus('Offline · connection unavailable')}}
+function stopPeer(){clearTimeout(reconnectTimer);const p=peer;peer=null;peerReady=false;if(p)p.destroy();networkStatus(db.online?'Offline':'Offline mode')}
+function wire(c){connections.add(c);c.on('data',data=>receive(c,data));c.on('close',()=>connections.delete(c));c.on('error',()=>connections.delete(c));return c}
+function sendPacket(id,m){if(pending.has(m.id))return;if(!peerReady||!peer){m.state='Not delivered';save();if(active===id)renderThread();toast('Connect online to send.');connectPeer();return}
+ m.state='Pending';save();if(active===id)renderThread();let c;try{c=wire(peer.connect(id,{reliable:true,serialization:'json'}))}catch(e){m.state='Not delivered';save();renderThread();return}
+ const finish=ok=>{const p=pending.get(m.id);if(!p)return;clearTimeout(p.timer);pending.delete(m.id);m.state=ok?'Delivered':'Not delivered';save();if(active===id)renderThread();setTimeout(()=>c.close(),500)};
+ pending.set(m.id,{id,finish,timer:setTimeout(()=>finish(false),12000)});c.on('open',()=>{if(!pending.has(m.id)){c.close();return}try{c.send({type:'message',id:m.id,text:m.text,name:db.profile})}catch(e){finish(false)}});c.on('error',()=>finish(false));c.on('close',()=>finish(false));
 }
-function showPrompt(){
- if(!available||dialog.open||installing||document.hidden)return;
- message.textContent='Version '+available.version+' is ready to install. Update now to restart the app with the latest version?';
- progress.hidden=true;now.disabled=false;later.disabled=false;
- dialog.showModal();
+function receive(c,d){if(!d||typeof d!=='object'||!validID(c.peer))return;
+ if(d.type==='ack'&&typeof d.id==='string'){const p=pending.get(d.id);if(p&&p.id===c.peer)p.finish(true);return}
+ if(d.type!=='message'||typeof d.id!=='string'||d.id.length>100||typeof d.text!=='string'||!d.text.trim()||d.text.length>4000)return;
+ contact(c.peer,typeof d.name==='string'?d.name:'New contact');const msgs=listFor(c.peer);
+ if(!msgs.some(m=>m.id===d.id)){msgs.push({id:d.id,text:d.text,time:Date.now(),mine:false});if(active!==c.peer)db.unread[c.peer]=(db.unread[c.peer]||0)+1;const saved=save();if(active===c.peer){renderThread();scrollBottom()}else{render();toast('New message from '+label(c.peer))}if(!saved)return}
+ if(c.open)try{c.send({type:'ack',id:d.id})}catch(e){}
 }
-function postpone(){
- if(installing)return;
- if(available){deferredVersion=available.version;deferredUntil=Date.now()+REMIND_INTERVAL;}
- dialog.close();
-}
-later.addEventListener('click',postpone);
-dialog.addEventListener('cancel',e=>{e.preventDefault();postpone()});
-async function check(manual=false){
- if(checking||installing||document.hidden)return;
- checking=true;button.disabled=true;
- if(manual||!available)status('Checking for updates…',true);
- try{
-  const latest=await fetchLatest();
-  if(newer(latest.version,version)){
-   available=latest;
-   status('Update available · v'+latest.version,false);
-   if(dialog.open&&!installing)message.textContent='Version '+latest.version+' is ready to install. Update now to restart the app with the latest version?';
-   if(manual||deferredVersion!==latest.version||Date.now()>=deferredUntil)showPrompt();
-  }else{
-   available=null;
-   if(dialog.open)dialog.close();
-   status('Up to date',true);
-  }
- }catch(e){status(navigator.onLine?'Update check unavailable':'Offline · saved version',false)}
- finally{checking=false;button.disabled=false}
-}
-now.addEventListener('click',async()=>{
- if(installing||!available)return;
- installing=true;now.disabled=true;later.disabled=true;button.disabled=true;
- progress.hidden=false;progress.textContent='Installing update…';
- status('Installing update…',true);
- try{
-  const latest=await fetchLatest();
-  if(!newer(latest.version,version))throw new Error('Update not available');
-  // A standalone iOS web app cannot close and reopen itself. A fresh navigation restarts its page.
-  location.replace(latest.url);
- }catch(e){
-  installing=false;now.disabled=false;later.disabled=false;button.disabled=false;
-  progress.textContent='Could not install. Check your connection and try again.';
-  status('Update available',false);
- }
-});
-if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(()=>{});}
-button.addEventListener('click',()=>check(true));
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)check()});
-window.addEventListener('online',()=>check());
-window.addEventListener('offline',()=>status('Offline · saved version',false));
-setInterval(()=>check(),CHECK_INTERVAL);
-check();
-</script>
-</body>
-</html>
+let call=null,stream=null,callInfo=null,ringTimer=null,callGeneration=0;
+function logCall(info,status){if(!info)return;db.calls.push({...info,status,time:Date.now()});if(db.calls.length>500)db.calls.shift();save();if(tab==='calls'&&!active)renderCalls()}
+function callUI(id,video,incoming){$('callTitle').textContent=label(id);$('callState').textContent=incoming?'Incoming '+(video?'video':'voice')+' call':'Calling…';$('acceptCall').hidden=!incoming;$('muteCall').hidden=incoming;$('endCall').textContent=incoming?'Decline':'End call';$('remoteVideo').hidden=!video;$('localVideo').hidden=!video;$('muteCall').textContent='Mute';if(!$('callDialog').open)$('callDialog').showModal()}
+function attachCall(c){c.on('stream',s=>{if(c!==call)return;clearTimeout(ringTimer);$('remoteVideo').srcObject=s;$('remoteVideo').play().catch(()=>{$('callState').textContent='Tap here to play call audio'});$('callState').textContent='Connected';$('acceptCall').hidden=true;$('muteCall').hidden=false});c.on('close',()=>{if(c===call)endCall('Ended')});c.on('error',()=>{if(c===call)endCall('Connection failed')})}
+async function media(video){if(!navigator.mediaDevices?.getUserMedia)throw Error('Microphone unavailable');return navigator.mediaDevices.getUserMedia({audio:true,video:video?{facingMode:'user',width:{ideal:480},height:{ideal:360},frameRate:{ideal:15,max:24}}:false})}
+async function startCall(id,video){if(callInfo)return;if(!peerReady||!peer){toast('Go online before making a call.');connectPeer();return}const gen=++callGeneration;callInfo={id,video,incoming:false};callUI(id,video,false);$('callState').textContent='Allow microphone'+(video?' and camera':'')+'…';try{const s=await media(video);if(gen!==callGeneration){s.getTracks().forEach(t=>t.stop());return}stream=s;if(video){$('localVideo').srcObject=s;$('localVideo').play().catch(()=>{})}call=peer.call(id,s,{metadata:{video,name:db.profile}});if(!call)throw Error('Call failed');attachCall(call);$('callState').textContent='Calling…';ringTimer=setTimeout(()=>endCall('No answer'),30000)}catch(e){if(gen===callGeneration){toast('Could not start call. Check permissions or connection.');endCall('Failed')}}}
+function incomingCall(c){if(callInfo||!validID(c.peer)||c.peer===db.id){c.close();return}contact(c.peer,typeof c.metadata?.name==='string'?c.metadata.name:'New contact');save();call=c;callInfo={id:c.peer,video:c.metadata?.video===true,incoming:true};++callGeneration;callUI(c.peer,callInfo.video,true);attachCall(c);ringTimer=setTimeout(()=>endCall('Missed'),30000)}
+$('acceptCall').onclick=async()=>{if(!call||!callInfo)return;const gen=callGeneration,c=call,video=callInfo.video;$('acceptCall').disabled=true;try{const s=await media(video);if(gen!==callGeneration||call!==c){s.getTracks().forEach(t=>t.stop());return}stream=s;if(video){$('localVideo').srcObject=s;$('localVideo').play().catch(()=>{})}c.answer(s);$('acceptCall').hidden=true;$('muteCall').hidden=false;$('endCall').textContent='End call';$('callState').textContent='Connecting…'}catch(e){if(gen===callGeneration){toast('Microphone or camera permission denied.');endCall('Failed')}}finally{$('acceptCall').disabled=false}};
+function endCall(status='Ended'){const info=callInfo,c=call;callInfo=null;call=null;++callGeneration;clearTimeout(ringTimer);if(c)c.close();if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;$('remoteVideo').srcObject=null;$('localVideo').srcObject=null;if($('callDialog').open)$('callDialog').close();logCall(info,status)}
+$('endCall').onclick=()=>endCall($('acceptCall').hidden?'Ended':'Declined');$('callDialog').addEventListener('cancel',e=>{e.preventDefault();endCall('Ended')});$('muteCall').onclick=()=>{const tracks=stream?.getAudioTracks()||[];if(!tracks.length)return;const enabled=!tracks[0].enabled;tracks.forEach(t=>t.enabled=enabled);$('muteCall').textContent=enabled?'Mute':'Unmute'};$('callState').onclick=()=>$('remoteVideo').play().catch(()=>{});$('voice').onclick=()=>active&&startCall(active,false);$('video').onclick=()=>active&&startCall(active,true);
+$('appName').onchange=e=>{db.name=e.target.value.trim().slice(0,24)||'App';save();appearance()};$('profileName').onchange=e=>{db.profile=e.target.value.trim().slice(0,60)||'Me';save();appearance()};$('theme').onchange=e=>{db.theme=e.target.value;save();appearance()};$('onlineToggle').onchange=e=>{db.online=e.target.checked;save();if(db.online)connectPeer();else{if(callInfo)endCall();stopPeer()}};$('batteryToggle').onchange=e=>{db.battery=e.target.checked;save();scheduleUpdate()};$('exportData').onclick=()=>{const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download='app-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),3000)};
+$('renameHelp').onclick=()=>$('renameDialog').showModal();document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>$(b.dataset.close).close());
+let checking=false,available=null,deferUntil=0,deferVersion='',updateTimer=null,installing=false;
+function newer(a,b){const x=a.split('.').map(Number),y=b.split('.').map(Number);for(let i=0;i<3;i++){if(x[i]!==y[i])return x[i]>y[i]}return false}
+function scheduleUpdate(){clearTimeout(updateTimer);if(!document.hidden)updateTimer=setTimeout(()=>checkUpdate(),db.battery?120000:15000)}
+async function checkUpdate(manual=false){clearTimeout(updateTimer);if(document.hidden||installing)return;if(checking){scheduleUpdate();return}checking=true;$('updateStatus').textContent='Checking…';try{const u=new URL('./version.json',location.href);u.searchParams.set('update',Date.now());const res=await fetch(u,{cache:'no-store'});if(!res.ok)throw Error();const v=(await res.json()).version;if(!/^\d+\.\d+\.\d+$/.test(v))throw Error();if(newer(v,version)){available=v;$('updateStatus').textContent='Update available · v'+v;if(!callInfo&&!$('updateDialog').open&&(manual||deferVersion!==v||Date.now()>=deferUntil)){ $('updateMessage').textContent='Version '+v+' is ready. Install now? Your chats and settings will stay on your phone.';$('updateDialog').showModal()}}else{$('updateStatus').textContent='Up to date';available=null}}catch(e){$('updateStatus').textContent=navigator.onLine?'Update check unavailable':'Offline'}finally{checking=false;scheduleUpdate()}}
+function postpone(){deferUntil=Date.now()+120000;deferVersion=available||'';$('updateDialog').close()}
+$('later').onclick=postpone;$('updateDialog').addEventListener('cancel',e=>{e.preventDefault();postpone()});$('updateNow').onclick=async()=>{if(!available||installing)return;if(!save()){toast('Save failed; update cancelled.');return}installing=true;$('updateNow').disabled=true;try{const url=new URL('./index.html',location.href);url.searchParams.set('update',Date.now());const r=await fetch(url,{cache:'no-store'});const doc=new DOMParser().parseFromString(await r.text(),'text/html');const target=doc.querySelector('meta[name=app-version]')?.content;if(!r.ok||!target||!newer(target,version))throw Error();stopPeer();location.replace(url.href)}catch(e){installing=false;$('updateNow').disabled=false;toast('Update not ready. Try again shortly.');scheduleUpdate()}};
+$('checkUpdate').onclick=()=>checkUpdate(true);
+document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(updateTimer);if(!callInfo)stopPeer()}else{connectPeer();checkUpdate()}});
+window.addEventListener('online',()=>{connectPeer();checkUpdate()});window.addEventListener('offline',()=>{networkStatus('Offline');$('updateStatus').textContent='Offline'});window.addEventListener('pagehide',()=>{save();stopPeer()});
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(()=>{});
+appearance();render();connectPeer();checkUpdate();
+</script></body></html>
